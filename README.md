@@ -1,5 +1,5 @@
-# `cq-graphics-template`
-> A NodeCG graphics bundle.
+# `mh-broadcast-graphics`
+> A NodeCG graphics bundle for Midnight Hours.
 
 ![License][license-shield]
 ![Stars][stars-shield]
@@ -9,7 +9,7 @@ This is a NodeCG graphics bundle, make sure you have a working NodeCG installati
 - This is a custom graphics bundle that I was commissioned for. If you'd like to commission your own, please see my [ko-fi](https://ko-fi.com/leptoflare) page.
 
 ## Installation
-1. Find the version you're looking for on the releases page, and download `cq-graphics-template.zip`.
+1. Find the version you're looking for on the releases page, and download `mh-broadcast-graphics.zip`.
 1. Unzip the file and drag the folder into the `bundles/` subdirectory of your NodeCG installation.
 
 ## Running locally
@@ -23,8 +23,8 @@ This is a NodeCG graphics bundle, make sure you have a working NodeCG installati
 
 Contact me · [**@LeptoFlare**](https://github.com/LeptoFlare) · [lepto.tech](https://lepto.tech)
 
-_[https://github.com/LeptoFlare/cq-graphics-template](https://github.com/LeptoFlare/cq-graphics-template)_
+_[https://github.com/LeptoFlare/mh-broadcast-graphics](https://github.com/LeptoFlare/mh-broadcast-graphics)_
 
 <!-- markdown links & imgs -->
-[stars-shield]: https://img.shields.io/github/stars/LeptoFlare/cq-graphics-template.svg?style=social
-[license-shield]: https://img.shields.io/github/license/LeptoFlare/cq-graphics-template.svg?style=flat
+[stars-shield]: https://img.shields.io/github/stars/LeptoFlare/mh-broadcast-graphics.svg?style=social
+[license-shield]: https://img.shields.io/github/license/LeptoFlare/mh-broadcast-graphics.svg?style=flat
