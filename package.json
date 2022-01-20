@@ -11,16 +11,22 @@
     "compatibleRange": ">=1.8.1",
     "graphics": [
       {
-        "file": "index.html",
+        "file": "break.html",
+        "width": 1920,
+        "height": 1080
+      },
+      {
+        "file": "game.html",
         "width": 1920,
         "height": 1080
       }
     ]
   },
   "dependencies": {
-    "framer-motion": "^6.0.0",
+    "animejs": "^3.2.1",
     "react": "^17.0.2",
-    "react-dom": "^17.0.2"
+    "react-dom": "^17.0.2",
+    "use-nodecg": "^0.4.1-1"
   },
   "devDependencies": {
     "@vitejs/plugin-react": "^1.0.7",
