@@ -2,6 +2,8 @@ import React, { useRef, useEffect, useState } from "react"
 import { useReplicant } from "use-nodecg"
 import anime from "animejs"
 import render from "./_render.jsx"
+import mhLogo from "./MH_Logo.svg"
+import clockAsset from "./MH_ClockBackground-Asset.svg"
 
 const Scoreboard = ({ showScores }) => {
   const ref = useRef(null)
@@ -24,178 +26,185 @@ const Scoreboard = ({ showScores }) => {
         })
   }, [showScores])
 
-  const [currentTeams] = useReplicant("currentTeams", ["Team A", "Team B"], {
-    namespace: "cq-overlay-controls",
-  })
-  const teamRefs = [useRef(null), useRef(null)]
-  const [teamNames, setTeamNames] = useState([
-    currentTeams[0].name,
-    currentTeams[1].name,
-  ])
-  useEffect(() => {
-    currentTeams.forEach((value, i) => {
-      if (value.name !== teamNames[i]) {
-        fadeChange(teamRefs[i].current, () => {
-          setTeamNames([currentTeams[0].name, currentTeams[1].name])
-        })
-      }
-    })
-  }, [currentTeams])
-
-  const [currentColors] = useReplicant(
-    "currentColors",
-    ["#4eb3d3", "#4eb3d3"],
-    {
-      namespace: "cq-overlay-controls",
-    }
-  )
-  const colorRefs = [useRef(null), useRef(null)]
-  useEffect(() => {
-    currentColors.forEach((value, i) => {
-      anime({
-        targets: colorRefs[i].current,
-        easing: "easeInOutSine",
-        duration: 400,
-        backgroundColor: value,
-      })
-    })
-  }, [currentColors])
-
   return (
-    <div ref={ref} className="flex flex-col rounded-lg overflow-hidden">
-      <div className="flex flex-col items-stretch">
-        <div className="bg-slate-700 pl-4 py-1 font-bold text-white text-lg">
-          Scoreboard
-        </div>
-        <div className="flex items-stretch">
-          <div className="flex flex-col p-4 gap-4 bg-slate-200">
+    <div
+      className="flex flex-col gap-4 items-stretch text-theme-white"
+      ref={ref}
+    >
+      <Block>
+        <div
+          className="flex flex-col gap-2 px-5 py-2 bg-cover bg-center"
+          style={{ backgroundImage: `url(${clockAsset})` }}
+        >
+          <div className="flex gap-4 items-center">
             <div className="flex gap-4 items-center">
-              <div ref={colorRefs[0]} className="rounded-md h-8 w-8" />
-              <div
-                ref={teamRefs[0]}
-                className="text-2xl font-semibold leading-none"
-              >
-                {teamNames[0]}
-              </div>
+              <Score index={0} />
+              <Color index={0} />
             </div>
-            <div className="flex gap-4 items-center">
-              <div ref={colorRefs[1]} className="rounded-md h-8 w-8" />
-              <div
-                ref={teamRefs[1]}
-                className="text-2xl font-semibold leading-none"
-              >
-                {teamNames[1]}
-              </div>
-            </div>
+            <Name index={0} />
           </div>
-          <Scores />
+          <div className="flex gap-4 items-center">
+            <div className="flex gap-4 items-center">
+              <Score index={1} />
+              <Color index={1} />
+            </div>
+            <Name index={1} />
+          </div>
         </div>
-      </div>
+      </Block>
+      <Block>
+        <div className="flex gap-3 px-5 py-2 h-11 relative items-center text-2xl">
+          <img src={mhLogo} className="h-full"></img>
+          <FlavorText />
+        </div>
+      </Block>
     </div>
   )
 }
+
+const FlavorText = () => {
+  const [replicant] = useReplicant("currentFlavorText", "Hello World", {
+    namespace: "cq-overlay-controls",
+  })
+  const [state, setState] = useState(replicant)
+  const ref = useRef(null)
+  useEffect(() => {
+    if (replicant !== state) {
+      fadeText(ref.current, replicant, setState)
+    }
+  }, [replicant])
+
+  return <div ref={ref}>{state}</div>
+}
+
+const Score = ({ index }) => {
+  const [replicant] = useReplicant("currentScores", [0, 0], {
+    namespace: "cq-overlay-controls",
+  })
+  const [state, setState] = useState(replicant[index])
+  const ref = useRef(null)
+
+  useEffect(() => {
+    if (replicant[index] !== state) {
+      fadeChange(ref.current, () => {
+        setState(replicant[index])
+      })
+    }
+  }, [replicant])
+
+  return (
+    <div className="text-4xl font-mono w-8 text-center" ref={ref}>
+      {state}
+    </div>
+  )
+}
+
+const Color = ({ index }) => {
+  const [replicant] = useReplicant("currentColors", ["#4eb3d3", "#4eb3d3"], {
+    namespace: "cq-overlay-controls",
+  })
+  const ref = useRef(null)
+  useEffect(() => {
+    anime({
+      targets: ref.current,
+      easing: "easeInOutSine",
+      duration: 300,
+      backgroundColor: replicant[index],
+    })
+  }, [replicant])
+
+  return (
+    <div
+      className="rounded-full h-6 w-6 border-2 border-theme-white/25"
+      ref={ref}
+    />
+  )
+}
+
+const Name = ({ index }) => {
+  const [replicant] = useReplicant("currentTeams", ["Team A", "Team B"], {
+    namespace: "cq-overlay-controls",
+  })
+  const [state, setState] = useState(replicant[index].name)
+  const ref = useRef(null)
+  useEffect(() => {
+    if (replicant[index].name !== state) {
+      fadeText(ref.current, replicant[index].name, setState)
+    }
+  }, [replicant])
+  return (
+    <div className="text-3xl">
+      <div ref={ref}>{state}</div>
+    </div>
+  )
+}
+
+const Block = ({ children, ref }) => (
+  <div ref={ref} className="grid">
+    <div className="bg-theme-space col-start-1 row-start-1 rounded-xl z-10 shadow-sm shadow-theme-night/50 overflow-hidden">
+      {children}
+    </div>
+    <div className="bg-theme-blue col-start-1 row-start-1 rounded-xl -translate-x-1.5 translate-y-1.5" />
+  </div>
+)
 
 const fadeChange = (ref, onChange) => {
   anime({
     targets: ref,
     easing: "easeInOutSine",
     opacity: 0,
-    duration: 200,
+    duration: 300,
     complete: () => {
       onChange()
       anime({
         targets: ref,
         easing: "easeInOutSine",
         opacity: 1,
-        duration: 200,
+        duration: 300,
       })
     },
   })
 }
 
-const Scores = () => {
-  const [currentScores] = useReplicant("currentScores", [0, 0], {
-    namespace: "cq-overlay-controls",
+const fadeText = (ref, newState, setState) => {
+  const tl = anime.timeline({
+    targets: ref,
+    duration: 500,
+    easing: "easeInOutSine",
   })
-  const [scores, setScores] = useState(currentScores)
-  const scoreRefs = [useRef(null), useRef(null)]
-
-  useEffect(() => {
-    currentScores.forEach((value, i) => {
-      if (value !== scores[i]) {
-        fadeChange(scoreRefs[i].current, () => {
-          setScores(Object.assign([], currentScores))
-        })
-      }
-    })
-  }, [currentScores])
-
-  return (
-    <div className="flex flex-col py-4 px-2 gap-4 bg-indigo-400">
-      <div
-        ref={scoreRefs[0]}
-        className="h-8 w-8 flex items-center justify-center text-3xl text-white font-mono"
-      >
-        {scores[0]}
-      </div>
-      <div
-        ref={scoreRefs[1]}
-        className="h-8 w-8 flex items-center justify-center text-3xl text-white font-mono"
-      >
-        {scores[1]}
-      </div>
-    </div>
-  )
+  tl.add({
+    opacity: 0,
+    duration: 300,
+    complete: () => {
+      setState("\xa0")
+    },
+  })
+  tl.add({
+    minWidth: `${measureText(newState, ref)}px`,
+    complete: () => {
+      setState(newState)
+    },
+  })
+  tl.add({
+    duration: 300,
+    opacity: 1,
+  })
 }
 
-const Commentators = ({ currentGameScreen }) => {
-  const ref = useRef(null)
+const measureText = (text, element) => {
+  const measurer = document.createElement("div")
 
-  useEffect(() => {
-    currentGameScreen.showScores && currentGameScreen.showCommentators
-      ? anime({
-          targets: ref.current,
-          easing: "easeInOutExpo",
-          opacity: 1,
-          scale: 1,
-          duration: 400,
-          delay: 100,
-        })
-      : anime({
-          targets: ref.current,
-          easing: "easeInOutExpo",
-          opacity: 0,
-          scale: 0.9,
-          duration: 400,
-          delay: 100,
-        })
-  }, [currentGameScreen])
-
-  return (
-    <div ref={ref} className="flex flex-col rounded-lg overflow-hidden">
-      <div className="flex flex-col items-stretch">
-        <div className="bg-slate-700 pl-4 py-1 font-bold text-white text-lg">
-          Commentators
-        </div>
-        <div className="flex items-stretch">
-          <div className="flex flex-col p-4 gap-4 bg-slate-200">
-            <div className="text-2xl font-semibold flex items-center">
-              Chaedr
-              <div className="bg-slate-700 text-xl text-slate-300 rounded-lg mx-2 px-2 py-0.5">
-                they/them
-              </div>
-            </div>
-            <div className="text-2xl font-semibold flex items-center">
-              Quark
-              <div className="bg-slate-700 text-xl text-slate-300 rounded-lg mx-2 px-2 py-0.5">
-                they/them
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  )
+  measurer.style.position = "absolute"
+  measurer.style.top = "1100px"
+  measurer.style.opacity = "0"
+  measurer.style.zIndex = "-99999"
+  measurer.style.padding = 0
+  measurer.classList = element.classList
+  measurer.innerText = text
+  element.appendChild(measurer)
+  let width = measurer.getBoundingClientRect().width
+  measurer.parentNode.removeChild(measurer)
+  return width
 }
 
 function App() {
@@ -205,9 +214,8 @@ function App() {
     { namespace: "cq-overlay-controls" }
   )
   return (
-    <div className="p-8 flex flex-col gap-8 items-start">
+    <div className="p-5 flex flex-col gap-5 items-start">
       <Scoreboard showScores={currentGameScreen.showScores} />
-      <Commentators currentGameScreen={currentGameScreen} />
     </div>
   )
 }
