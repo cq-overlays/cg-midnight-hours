@@ -17,7 +17,6 @@ import {
 
 function App() {
   const [changed, setChanged] = useState(0)
-  console.log(changed)
   return (
     <div className="flex flex-col bg-theme-space items-center h-screen relative">
       <img
@@ -82,8 +81,6 @@ const BrbScreen = ({ changed, setChanged }) => {
       })
     }
   }, [changed])
-
-  console.log(onScreen)
 
   const classlist = onScreen ? "flex flex-col items-center" : "hidden"
 
@@ -232,10 +229,6 @@ const MaplistScreen = ({ changed, setChanged }) => {
   const [roundReplicant] = useCurrentRound()
   const [winnersReplicant] = useCurrentMapWinners()
 
-  useEffect(() => {
-    console.log("currentMapWinners", winnersReplicant)
-  }, [winnersReplicant])
-
   const [maps, setMaps] = useState([])
 
   useEffect(() => {
@@ -364,7 +357,6 @@ const FlavorText = ({ className }) => {
   const ref = useRef(null)
   useEffect(() => {
     if (replicant !== state) {
-      console.log("FADE FLAVOR TEXT", ref.current, replicant)
       subtleFade(ref.current, replicant, setState)
     }
   }, [replicant])
@@ -381,7 +373,6 @@ const UpNext = () => {
   const [state, setState] = useState()
   const ref = useRef(null)
   useEffect(() => {
-    console.log("upnext", replicant.name, state)
     if (`Up Next: ${replicant.name}` !== state) {
       subtleFade(ref.current, `Up Next: ${replicant.name}`, setState)
     }
