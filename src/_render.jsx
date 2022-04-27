@@ -1,14 +1,4 @@
-import React from "react"
-import ReactDOM from "react-dom"
+import { render } from "preact"
 import "./index.css"
 
-const render = (App) => {
-  ReactDOM.render(
-    <React.StrictMode>
-      <App />
-    </React.StrictMode>,
-    document.getElementById("root")
-  )
-}
-
-export default render
+export default (App) => render(<App />, document.getElementById("root"))

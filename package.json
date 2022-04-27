@@ -29,7 +29,7 @@
     "use-nodecg": "^0.4.1-1"
   },
   "devDependencies": {
-    "@vitejs/plugin-react": "^1.0.7",
+    "@preact/preset-vite": "^2.2.0",
     "autoprefixer": "^10.4.2",
     "postcss": "^8.4.5",
     "postcss-preset-env": "^7.4.3",
