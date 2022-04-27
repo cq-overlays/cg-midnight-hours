@@ -1,4 +1,4 @@
-import React, { useRef, useEffect, useState } from "react"
+import { useRef, useEffect, useState } from "preact/compat"
 import { useReplicant } from "use-nodecg"
 import anime from "animejs"
 import render from "./_render.jsx"
