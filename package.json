@@ -24,15 +24,14 @@
   },
   "dependencies": {
     "animejs": "^3.2.1",
-    "preact": "^10.7.1",
-    "use-nodecg": "^0.4.1-1"
+    "preact": "^10.7.1"
   },
   "devDependencies": {
     "@preact/preset-vite": "^2.2.0",
-    "autoprefixer": "^10.4.2",
-    "postcss": "^8.4.5",
-    "postcss-preset-env": "^7.4.3",
-    "tailwindcss": "^3.0.15",
-    "vite": "^2.7.2"
+    "autoprefixer": "^10.4.5",
+    "postcss": "^8.4.12",
+    "postcss-preset-env": "^7.4.4",
+    "tailwindcss": "^3.0.24",
+    "vite": "^2.9.6"
   }
 }

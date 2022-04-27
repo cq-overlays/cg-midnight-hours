@@ -1,5 +1,4 @@
 import { useState, useRef, useEffect, forwardRef } from "preact/compat"
-import { useReplicant } from "use-nodecg"
 import anime from "animejs"
 import render from "./_render.jsx"
 import logo from "./MH_Logo-wText.svg"
@@ -8,6 +7,13 @@ import discord from "./MH_Discord.svg"
 import bg from "./backgroundglare.png"
 import clock from "./MH_ClockBackground-Asset.svg"
 import stages from "./stages"
+import {
+  useCurrentBreakScreen,
+  useCurrentFlavorText,
+  useCurrentMapWinners,
+  useCurrentRound,
+  useCurrentTeams,
+} from "./replicants.jsx"
 
 function App() {
   const [changed, setChanged] = useState(0)
@@ -30,9 +36,7 @@ function App() {
 }
 
 const BrbScreen = ({ changed, setChanged }) => {
-  const [replicant] = useReplicant("currentBreakScreen", "brb", {
-    namespace: "cq-overlay-controls",
-  })
+  const [replicant] = useCurrentBreakScreen()
   const ref1 = useRef(null)
   const ref2 = useRef(null)
   const ref3 = useRef(null)
@@ -107,9 +111,7 @@ const BrbScreen = ({ changed, setChanged }) => {
 }
 
 const TeamScreen = ({ changed, setChanged }) => {
-  const [replicant] = useReplicant("currentBreakScreen", "rosters", {
-    namespace: "cq-overlay-controls",
-  })
+  const [replicant] = useCurrentBreakScreen()
   const ref1 = useRef(null)
   const ref2 = useRef(null)
   const ref3 = useRef(null)
@@ -199,10 +201,7 @@ const TeamScreen = ({ changed, setChanged }) => {
 }
 
 const MaplistScreen = ({ changed, setChanged }) => {
-  const [replicant] = useReplicant("currentBreakScreen", "maplist", {
-    namespace: "cq-overlay-controls",
-  })
-
+  const [replicant] = useCurrentBreakScreen()
   const ref = useRef()
   const [onScreen, setOnScreen] = useState()
 
@@ -230,17 +229,8 @@ const MaplistScreen = ({ changed, setChanged }) => {
     ? "py-12 px-40 flex flex-col gap-20 w-screen h-screen items-center"
     : "hidden"
 
-  const [roundReplicant] = useReplicant(
-    "currentRound",
-    {
-      name: "Test Round",
-      value: [],
-    },
-    { namespace: "cq-overlay-controls" }
-  )
-  const [winnersReplicant] = useReplicant("currentMapWinners", [], {
-    namespace: "cq-overlay-controls",
-  })
+  const [roundReplicant] = useCurrentRound()
+  const [winnersReplicant] = useCurrentMapWinners()
 
   useEffect(() => {
     console.log("currentMapWinners", winnersReplicant)
@@ -369,9 +359,7 @@ const Map = forwardRef(({ mode, mapName, winner = null }, ref) => {
 })
 
 const FlavorText = ({ className }) => {
-  const [replicant] = useReplicant("currentFlavorText", "Hello World", {
-    namespace: "cq-overlay-controls",
-  })
+  const [replicant] = useCurrentFlavorText()
   const [state, setState] = useState()
   const ref = useRef(null)
   useEffect(() => {
@@ -389,13 +377,7 @@ const FlavorText = ({ className }) => {
 }
 
 const UpNext = () => {
-  const [replicant] = useReplicant(
-    "currentRound",
-    { name: "No Round" },
-    {
-      namespace: "cq-overlay-controls",
-    }
-  )
+  const [replicant] = useCurrentRound()
   const [state, setState] = useState()
   const ref = useRef(null)
   useEffect(() => {
@@ -412,20 +394,7 @@ const UpNext = () => {
 }
 
 const TeamName = ({ index }) => {
-  const [replicant] = useReplicant(
-    "currentTeams",
-    [
-      {
-        name: "Team A",
-        roster: ["Player A1", "Player A2", "Player A3", "Player A4"],
-      },
-      {
-        name: "Team B",
-        roster: ["Player B1", "Player B2", "Player B3", "Player B4"],
-      },
-    ],
-    { namespace: "cq-overlay-controls" }
-  )
+  const [replicant] = useCurrentTeams()
   const [state, setState] = useState(replicant[index].name)
   const ref = useRef(null)
   useEffect(() => {
@@ -441,20 +410,7 @@ const TeamName = ({ index }) => {
 }
 
 const TeamRoster = ({ index }) => {
-  const [replicant] = useReplicant(
-    "currentTeams",
-    [
-      {
-        name: "Team A",
-        roster: ["Player A1", "Player A2", "Player A3", "Player A4"],
-      },
-      {
-        name: "Team B",
-        roster: ["Player B1", "Player B2", "Player B3", "Player B4"],
-      },
-    ],
-    { namespace: "cq-overlay-controls" }
-  )
+  const [replicant] = useCurrentTeams()
   const [state, setState] = useState()
   const ref = useRef(null)
   useEffect(() => {

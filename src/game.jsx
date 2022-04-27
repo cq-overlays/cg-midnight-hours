@@ -1,9 +1,15 @@
 import { useRef, useEffect, useState } from "preact/compat"
-import { useReplicant } from "use-nodecg"
 import anime from "animejs"
 import render from "./_render.jsx"
 import mhLogo from "./MH_Logo.svg"
 import clockAsset from "./MH_ClockBackground-Asset.svg"
+import {
+  useCurrentColors,
+  useCurrentFlavorText,
+  useCurrentGameScreen,
+  useCurrentScores,
+  useCurrentTeams,
+} from "./replicants.jsx"
 
 const Scoreboard = ({ showScores }) => {
   const ref = useRef(null)
@@ -63,9 +69,7 @@ const Scoreboard = ({ showScores }) => {
 }
 
 const FlavorText = () => {
-  const [replicant] = useReplicant("currentFlavorText", "Hello World", {
-    namespace: "cq-overlay-controls",
-  })
+  const [replicant] = useCurrentFlavorText()
   const [state, setState] = useState(replicant)
   const ref = useRef(null)
   useEffect(() => {
@@ -78,9 +82,7 @@ const FlavorText = () => {
 }
 
 const Score = ({ index }) => {
-  const [replicant] = useReplicant("currentScores", [0, 0], {
-    namespace: "cq-overlay-controls",
-  })
+  const [replicant] = useCurrentScores()
   const [state, setState] = useState(replicant[index])
   const ref = useRef(null)
 
@@ -100,9 +102,7 @@ const Score = ({ index }) => {
 }
 
 const Color = ({ index }) => {
-  const [replicant] = useReplicant("currentColors", ["#4eb3d3", "#4eb3d3"], {
-    namespace: "cq-overlay-controls",
-  })
+  const [replicant] = useCurrentColors()
   const ref = useRef(null)
   useEffect(() => {
     anime({
@@ -122,9 +122,7 @@ const Color = ({ index }) => {
 }
 
 const Name = ({ index }) => {
-  const [replicant] = useReplicant("currentTeams", ["Team A", "Team B"], {
-    namespace: "cq-overlay-controls",
-  })
+  const [replicant] = useCurrentTeams()
   const [state, setState] = useState(replicant[index].name)
   const ref = useRef(null)
   useEffect(() => {
@@ -208,11 +206,7 @@ const measureText = (text, element) => {
 }
 
 function App() {
-  const [currentGameScreen] = useReplicant(
-    "currentGameScreen",
-    {},
-    { namespace: "cq-overlay-controls" }
-  )
+  const [currentGameScreen] = useCurrentGameScreen()
   return (
     <div className="p-5 flex flex-col gap-5 items-start">
       <Scoreboard showScores={currentGameScreen.showScores} />
