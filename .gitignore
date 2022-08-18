@@ -1,5 +1,5 @@
 # NodeCG build directory
-/graphics
+mh-broadcast-graphics/graphics
 
 # Defaults
 node_modules
